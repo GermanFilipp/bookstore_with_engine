@@ -1,0 +1,34 @@
+<div class="row">
+  <div id="owl-carousel" class="owl-carousel owl-theme col-md-8 col-md-offset-2">
+    <% @bestsellers.each do |book|%>
+       <div class="item" style="text-align: center">
+         <div class="clearfix">
+           <h3 class="pull-left" ><%= book.title %></h3>
+           <p>by <%= book.author.first_name  %> <%= book.author.last_name%></p>
+         </div>
+         <div class="row">
+           <div class="col-md-6">
+             <%= image_tag book.image_url, :class =>'pull-left img-thumbnail' %>
+           </div>
+           <div class="col-md-4">
+             <%= book.description%>
+             <%= form_tag(shop_cart.order_items_path,:method => 'post') do %>
+
+                <%= number_field_tag 'orders[quantity]','1', in: 1..book.quentity_books, class:'quantity-input'  %>
+
+                <%= text_field_tag 'orders[book_id]' ,book.id, style: 'visibility:hidden;'  %>
+
+                <%= submit_tag "Add to Cart", class: "btn btn-large btn-primary" %>
+
+             <% end %>
+           </div>
+         </div>
+
+
+
+       </div>
+    <% end %>
+  </div>
+
+</div>
+<h3>Welcome to our amazing Bookstore!</br> Choose anything you wish, we'll ship it anywhere!</h3>

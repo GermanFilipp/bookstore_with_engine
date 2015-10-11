@@ -1,0 +1,45 @@
+<div class="cart clearfix">
+  <% unless @order_items.blank? %>
+     <%= form_tag(update_all_order_items_path, :controller => 'order_items', action: :update_all, method: :put) do %>
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th colspan="2">BOOK</th>
+            <th>PRICE</th>
+            <th>QTY</th>
+            <th>TOTAL</th>
+            <th>&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @order_items.each do |item| %>
+             <tr>
+               <td><%= link_to(image_tag(item.product.image.thumb)) %></td>
+               <td>
+                 <div><%= item.product.title %></div>
+                 <p><%= item.product.description %></p>
+               </td>
+               <td class="price"><%= number_to_currency(item.price) %></td>
+               <td><%= number_field_tag('quantity['+item.id.to_s+']', item.quantity, {:min => 1, :max => 20, :class => 'form-control quantity'}) %></td>
+               <td class="price"><%= number_to_currency(item.price*item.quantity) %></td>
+
+               <td class="price remove"><%= link_to('&times;'.html_safe, url_for(action: :destroy, id: item.id), method: :delete) %></td>
+             </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <div class="clearfix">
+          <div class="subtotal pull-right">SUBTOTAL: &nbsp; <strong>$<%= @order.total_price %></strong></div>
+        </div>
+        <div class="form-inline pull-right">
+          <%= text_field_tag(:coupon, nil, placeholder: 'Coupon code',size: 12, class:"form-control") %>
+          <%= submit_tag('UPDATE', :controller => 'order_items', :action => 'update',:method => 'put', :class => 'btn btn-default') %>
+          <%= link_to('CHECKOUT', main_app.order_step_path(:address), :class => 'btn btn-default') %>
+        </div>
+        <%= link_to('EMPTY CART', destroy_all_order_items_path, {:class => 'btn btn-default', :method => 'delete'}) %>
+        <%= link_to('CONTINUE SHOPPING', main_app.books_path, {:class => 'btn btn-default'}) %>
+     <% end %>
+  <% else %>
+     <p>Shopping cart is empty... <%= link_to 'Get started shopping!', main_app.books_path %></p>
+  <% end %>
+</div>
