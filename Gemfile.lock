@@ -1,5 +1,6 @@
-PATH
-  remote: /home/german/projects/engine/shop_cart
+GIT
+  remote: https://github.com/GermanFilipp/ShopCart.git
+  revision: 592fa66ef2be58faed7b055402960ce8c53b5616
   specs:
     shop_cart (0.0.1)
       aasm (~> 4.2.0)
